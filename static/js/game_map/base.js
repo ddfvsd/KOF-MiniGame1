@@ -13,13 +13,13 @@ class GameMap extends AcGameObject {
         this.root.$kof.append(this.$canvas);
         this.$canvas.focus();
         this.controller = new Controller(this.$canvas);
-
+//我们添加了游戏头部的UI，其分布为玩家0的血条显示，计时器以及玩家1的血条显示
         this.root.$kof.append(`<div class="kof-head">
         <div class="kof-head-hp-0"><div><div></div></div></div>
         <div class="kof-head-timer">60</div>
         <div class="kof-head-hp-1"><div><div></div></div></div>
     </div>`);
-
+//这是对游戏状态进行初始化
         this.time_left = 60000; // 单位是：ms
         this.$timer = this.root.$kof.find('.kof-head-timer');
 
@@ -29,10 +29,11 @@ class GameMap extends AcGameObject {
     }
 
     update(){
+        //这是由于更新时间的。时间递减，然后当时间为负数的时候显示为0，这样可以防止时间变成负数
         this.time_left -= this.timedelta;
         if (this.time_left < 0) {
             this.time_left = 0;
-
+//这是用于当时间结束时，如果玩家0跟玩家1都没有处于状态6，则设置结束状态
             let [a, b] = this.root.players;
             if (a.status !== 6 && b.status !== 6) {
                 a.status = b.status = 6;
@@ -40,13 +41,13 @@ class GameMap extends AcGameObject {
                 a.vx = b.vx = 0;
             }
         }
-
+//更新计时器
         this.$timer.text(parseInt(this.time_left / 1000));
 
         this.render();
 
     }
-
+//用于清空画布，为下一帧做准备
     render(){
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);//情空之前记录
         // this.ctx.fillstyle = 'black';

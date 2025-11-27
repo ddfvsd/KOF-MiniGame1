@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "KOF-MiniGame",
+			"path": "KOF-MiniGame"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "quanhuang"
+	}
+}

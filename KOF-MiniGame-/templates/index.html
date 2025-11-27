@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拳皇</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <!-- 角色选择界面 -->
+    <div id="character-select" class="character-select">
+        <div class="select-title">选择角色</div>
+        <div class="players-selection">
+            <div class="player-selection player-1">
+                <div class="player-title">玩家1</div>
+                <div class="character-list">
+                    <div class="character-item" data-character="kyo" data-player="0">
+
+                        <div class="character-name">草薙京</div>
+                    </div>
+                    <!-- 可以添加更多角色，但目前只有Kyo -->
+                </div>
+                <div class="selected-character">
+                    <span>已选择: </span>
+                    <span class="character-name-selected">未选择</span>
+                </div>
+            </div>
+
+            <div class="player-selection player-2">
+                <div class="player-title">玩家2</div>
+                <div class="character-list">
+                    <div class="character-item" data-character="kyo" data-player="1">
+
+                        <div class="character-name">草薙京</div>
+                    </div>
+                    <!-- 可以添加更多角色，但目前只有Kyo -->
+                </div>
+                <div class="selected-character">
+                    <span>已选择: </span>
+                    <span class="character-name-selected">未选择</span>
+                </div>
+            </div>
+        </div>
+        <div class="start-button">
+            <button id="start-game">开始游戏</button>
+        </div>
+    </div>
+
+    <!-- 游戏界面 -->
+    <div id="kof" class="hidden"></div>
+
+    <script type="module">
+        import { KOF } from '/static/js/base.js';
+
+        let kof;
+
+        // 角色选择逻辑
+        $(document).ready(function () {
+            let selectedCharacters = [null, null];
+
+            // 角色选择事件
+            $('.character-item').click(function () {
+                const playerIndex = parseInt($(this).data('player'));
+                const character = $(this).data('character');
+
+                selectedCharacters[playerIndex] = character;
+
+                // 更新显示
+                $(`.player-${playerIndex === 0 ? '1' : '2'} .character-name-selected`)
+                    .text($(this).find('.character-name').text());
+
+                // 高亮选中的角色
+                $('.character-item').removeClass('selected');
+                $(this).addClass('selected');
+
+                // 检查是否可以开始游戏
+                if (selectedCharacters[0] && selectedCharacters[1]) {
+                    $('#start-game').prop('disabled', false);
+                }
+            });
+
+            // 开始游戏事件
+            $('#start-game').click(function () {
+                $('#character-select').addClass('hidden');
+                $('#kof').removeClass('hidden');
+
+                // 初始化游戏，传入选择的角色
+                kof = new KOF('kof', selectedCharacters);
+            });
+        });
+    </script>
+</body>
+
+</html>
